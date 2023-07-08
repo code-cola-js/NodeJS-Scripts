@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path'); // Add the path module
 
 function splitArticle(article, chunkSize) {
   const chunks = [];
@@ -32,7 +33,7 @@ fs.readFile('./file.txt', 'utf8', (err, data) => {
 
   // 将每个数组元素写入单独的txt文件
   result.forEach((chunk, index) => {
-    const filename = `output_${index + 1}.txt`; // 根据顺序生成文件名
+    const filename = path.join('output', `output_${index + 1}.txt`); // Add 'output/' prefix to the filename
     fs.writeFile(filename, chunk, 'utf8', (err) => {
       if (err) {
         console.error(`写入文件 ${filename} 时发生错误：`, err);
