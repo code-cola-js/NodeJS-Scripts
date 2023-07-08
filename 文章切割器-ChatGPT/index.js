@@ -19,7 +19,12 @@ function splitArticle(article, chunkSize) {
   return chunks;
 }
 
-// 读取本地txt文件
+const outputDir = 'output';
+// Create the 'output' directory if it doesn't exist
+if (!fs.existsSync(outputDir)) {
+  fs.mkdirSync(outputDir);
+}
+
 fs.readFile('./file.txt', 'utf8', (err, data) => {
   if (err) {
     console.error('读取文件时发生错误：', err);
@@ -33,7 +38,7 @@ fs.readFile('./file.txt', 'utf8', (err, data) => {
 
   // 将每个数组元素写入单独的txt文件
   result.forEach((chunk, index) => {
-    const filename = path.join('output', `output_${index + 1}.txt`); // Add 'output/' prefix to the filename
+    const filename = path.join(outputDir, `output_${index + 1}.txt`);
     fs.writeFile(filename, chunk, 'utf8', (err) => {
       if (err) {
         console.error(`写入文件 ${filename} 时发生错误：`, err);
