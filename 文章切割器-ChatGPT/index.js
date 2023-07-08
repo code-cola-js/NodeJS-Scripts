@@ -1,6 +1,19 @@
 const fs = require('fs');
 const path = require('path'); // Add the path module
 
+
+// 清空目标文件夹中的所有文件
+function clearFolder(folderPath) {
+  if (fs.existsSync(folderPath)) {
+    const fileNames = fs.readdirSync(folderPath);
+
+    fileNames.forEach((fileName) => {
+      const filePath = path.join(folderPath, fileName);
+      fs.unlinkSync(filePath);
+    });
+  }
+}
+
 function splitArticle(article, chunkSize) {
   const chunks = [];
   let start = 0;
@@ -23,6 +36,9 @@ const outputDir = 'output';
 // Create the 'output' directory if it doesn't exist
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir);
+}else {
+  // 清空 'output' 文件夹中的文件
+  clearFolder(outputDir);
 }
 
 fs.readFile('./file.txt', 'utf8', (err, data) => {
@@ -46,7 +62,7 @@ fs.readFile('./file.txt', 'utf8', (err, data) => {
     请在你认为觉得重要的地方加粗
 
 
-    请总结一下内容：
+    请总结以下内容：
     ${chunk}
     `
     const filename = path.join(outputDir, `output_${index + 1}.txt`);
